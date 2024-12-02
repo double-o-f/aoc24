@@ -14,37 +14,30 @@ void sort(int size, int* num_list) {
 	sort(list_1);
 	sort(list_2);
 
- index_1 = 0;
- index_2 = 0;
-
+ 	index_1 = 0;
+ 	index_2 = 0;
 
 	for (int i = 0; i < size; i += 1) {
-  if (index_1 < list_1_size) {
-   num_list[i] = list_2[index_2];
-   index_2 += 1;
-  }
-  else if (index_2 < list_2_size) {
-   num_list[i] = list_1[index_1];
-   index_1 += 1;
-  }
-  else if (list_1[index_1] <= list_2[index_2]) {
-   list[index_1];
-   index_1 += 1;
-  }
-  else {
-   list[index_2];
-   index_2 += 1;
-  }
-
+		if (index_1 < list_1_size) {
+  			num_list[i] = list_2[index_2];
+  			index_2 += 1;
+  		}
+  		else if (index_2 < list_2_size) {
+  			num_list[i] = list_1[index_1];
+  			index_1 += 1;
+  		}
+  		else if (list_1[index_1] <= list_2[index_2]) {
+  			list[index_1];
+  			index_1 += 1;
+  		}
+  		else {
+  			list[index_2];
+  			index_2 += 1;
+  		}
 	}
-
- free(list_1); 
- free(list_2);
-
+	free(list_1); 
+	free(list_2);
 }
-
-
-
 
 
 int main(int argc, char const* argv[]) {
@@ -54,3 +47,4 @@ int main(int argc, char const* argv[]) {
 	int list_1[5] = {4, 2, 4, 3, 3};
 
 }
+
