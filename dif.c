@@ -2,7 +2,10 @@
 #include <stdlib.h>
 
 
-void sort(int size, int* num_list) {
+void mergeSort(int size, int* num_list) {
+	/*
+		split list in half and call recursively until size <= 1
+	*/
 	if (size <= 1) return;
 
 	int list_1_size = size / 2;
@@ -20,9 +23,12 @@ void sort(int size, int* num_list) {
 		list_2[i] = num_list[i + list_1_size];
 	}
 
-	sort(list_1_size, list_1);
-	sort(list_2_size, list_2);
+	mergeSort(list_1_size, list_1);
+	mergeSort(list_2_size, list_2);
 
+	/*
+		merge lists from least to greatest
+	*/
  	int index_1 = 0;
  	int index_2 = 0;
 
@@ -50,42 +56,58 @@ void sort(int size, int* num_list) {
 
 
 int main(int argc, char const* argv[]) {
-	int size = 11;
-
-	int list_1[11] = {1, 3, 5, 4, 2, 6, 4, 6, 3, 1, 1};
-	int list_2[11] = {4, 2, 4, 3, 3, 4, 6, 2, 4, 5, 3};
+	int size = 0;
 	int total_dif = 0;
+	int* list_1;
+	int* list_2;
 
-	for (int i = 0; i < size; i += 1) {
-		printf("%i, ", list_1[i]);
-	}
-	printf("\n");
-		for (int i = 0; i < size; i += 1) {
-		printf("%i, ", list_2[i]);
-	}
-	printf("\n\n");
 
-	sort(size, list_1);
-	sort(size, list_2);
-
-	for (int i = 0; i < size; i += 1) {
-		printf("%i, ", list_1[i]);
+	FILE* filePtr = fopen("dif-input.txt","r");
+	while (!feof(filePtr))				/*loop finds how many lines are in file*/
+	{
+		char chr = fgetc(filePtr);		/*read next char from file*/
+		if (chr == '\n')
+		{
+			size += 1;
+		}
 	}
-	printf("\n");
-		for (int i = 0; i < size; i += 1) {
-		printf("%i, ", list_2[i]);
-	}
-	printf("\n\n");
+	fseek(filePtr, 0, SEEK_SET);			/*set pointer to start of file*/
+	
+	list_1 = (int*)malloc(size * sizeof(int));
+	list_2 = (int*)malloc(size * sizeof(int));
 
-	for (int i = 0; i < size; i += 1) {
+	for (int i = 0; i < size; i += 1)
+	{
+		char num_str[5];			/*numbers in input are 5 chars long*/
+		for (int j = 0; j < 5; j += 1)
+		{
+			num_str[j] = fgetc(filePtr);	/*read next char from file*/
+		}
+
+		list_1[i] = atoi(num_str);		/*convert num_str to int*/
+		fseek(filePtr, 3, SEEK_CUR);		/*skip past spaces*/
+
+
+		for (int j = 0; j < 5; j += 1)
+		{
+			num_str[j] = fgetc(filePtr);	/*read next char from file*/
+		}
+
+		list_2[i] = atoi(num_str);		/*convert num_str to int*/
+		fseek(filePtr, 1, SEEK_CUR);		/*skip past \n*/
+	}
+	fclose(filePtr);
+
+
+	mergeSort(size, list_1);
+	mergeSort(size, list_2);
+
+
+	for (int i = 0; i < size; i += 1) {		/*difference between lists*/
 		int dif = abs(list_1[i] - list_2[i]);
 		total_dif += dif;
-		printf("%i, ", dif);
-
 	}
-	printf("\n\n");
-	printf("%i\n", total_dif);
+	printf("%i\n", total_dif);			/*print total difference*/
 
-
-
+	return 0;
 }
